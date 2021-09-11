@@ -1,25 +1,11 @@
 import { ICommand } from "../interface/ICommand";
 
 import * as mongoose from "mongoose";
-import { Command, ICommandDocument } from "../model/Command";
-
-interface IMatchKey {
-  team_id: String;
-  channel_id: String;
-  user_id: String;
-}
-
-function makeKey(req: ICommand): IMatchKey {
-  return {
-    team_id: req.team_id,
-    channel_id: req.channel_id,
-    user_id: req.user_id,
-  };
-}
+import { Command, ICommandDocument, makeCommandKey } from "../model/Command";
 
 export async function add(req: ICommand, weeks: number): Promise<string> {
   let message: string = "you should not be getting this message :'(";
-  const key = makeKey(req);
+  const key = makeCommandKey(req);
   await mongoose.connect(process.env.MONGODB_URI || "");
   const command = new Command(req as ICommandDocument).toObject();
   delete command["_id"];
@@ -34,7 +20,7 @@ export async function add(req: ICommand, weeks: number): Promise<string> {
 
 export async function remove(req: ICommand): Promise<string> {
   let message: string = "you should not be getting this message :'(";
-  const key = makeKey(req);
+  const key = makeCommandKey(req);
   await mongoose.connect(process.env.MONGODB_URI || "");
   await Command.deleteOne(key).exec();
   message = "You have been removed from this channel's pairings'";

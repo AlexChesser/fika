@@ -15,4 +15,5 @@ export interface ICommand {
   api_app_id?: String; // A12345
   frequency?: number;
   lastMatch?: Date;
+  nextMatch?: Date;
 }

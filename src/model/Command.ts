@@ -18,6 +18,20 @@ token=gIkuvaNzQIHg97ATvDxqgjtO
 &trigger_id=13345224609.738474920.8088930838d88f008e0
 &api_app_id=A123456
 */
+interface IMatchKey {
+  team_id: String;
+  channel_id: String;
+  user_id: String;
+}
+
+export function makeCommandKey(req: ICommand): IMatchKey {
+  return {
+    team_id: req.team_id,
+    channel_id: req.channel_id,
+    user_id: req.user_id,
+  };
+}
+
 const CommandSchema = new Schema<ICommand>({
   team_id: String,
   team_domain: String,
@@ -31,7 +45,10 @@ const CommandSchema = new Schema<ICommand>({
   text: String,
   frequency: Number,
   lastMatch: Date,
+  nextMatch: Date,
 });
+CommandSchema.index({ team_id: 1, channel_id: 1, nextMatch: 1 });
+CommandSchema.index({ team_id: 1, channel_id: 1, user_id: 1 });
 export interface ICommandDocument extends Document, ICommand {}
 export interface ICommandModel extends Model<ICommandDocument> {}
 export const Command = model<ICommandDocument>(
