@@ -9,6 +9,7 @@ const usage = `*Usage*:
 \`/fika list\` see a list of all the channels you've joined`;
 
 interface IResponse {
+  header?: any;
   statusCode: number;
   body: string;
 }
@@ -56,8 +57,11 @@ exports.handler = async (event: APIGatewayEvent, context: Context, callback: Cal
     case "add":
       res.body = await CommandController.add(params, parseInt(textarray[1]));  
       break;
-    case "remove":
-    case "list":  
+      case "list":
+        res.header = {
+          "Content-Type": "application/json"
+        }  
+      case "remove":
       res.body = await CommandController[textarray[0]](params);  
       break;
     default:
