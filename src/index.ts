@@ -25,6 +25,8 @@ function parseCommandText(text: String): string[] {
   const IncorrectNumberOfArguments = parts.length !== 2;
   const SecondArgumentInvalid = !parseInt(parts[1]);
   if (IsAddCommand && (IncorrectNumberOfArguments || SecondArgumentInvalid)) {
+    // prettier-ignore
+    console.log(`IsAddCommand:${IsAddCommand} && ( IncorrectNumberOfArguments:${IncorrectNumberOfArguments} || SecondArgumentInvalid:${SecondArgumentInvalid}`);
     throw Error("InvalidArgumentException");
   }
   return parts;

@@ -15,6 +15,7 @@ export async function add(req: ICommand, weeks: number): Promise<string> {
     { upsert: true }
   ).exec();
   message = "You have been added to the channel";
+  mongoose.connection.close();
   return message;
 }
 
@@ -24,6 +25,7 @@ export async function remove(req: ICommand): Promise<string> {
   await mongoose.connect(process.env.MONGODB_URI || "");
   await Command.deleteOne(key).exec();
   message = "You have been removed from this channel's pairings'";
+  mongoose.connection.close();
   return message;
 }
 
@@ -42,5 +44,6 @@ export async function list(req: ICommand): Promise<string> {
     }
     message += "\n";
   }
+  mongoose.connection.close();
   return message;
 }
