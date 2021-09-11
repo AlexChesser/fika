@@ -38,7 +38,7 @@ export async function list(req: ICommand): Promise<string> {
   }).exec();
   message = "You have joined the following channels:\n";
   for (let i = 0; i < data.length; i++) {
-    message += `${data[i].channel_name} once every ${data[i].frequency} weeks.`;
+    message += `#${data[i].channel_name} once every *${data[i].frequency}* weeks.`;
     if (data[i].lastMatch) {
       message += `You were last matched on ${data[i].lastMatch}`;
     }
