@@ -50,9 +50,9 @@ export async function list(req: ICommand): Promise<string> {
   };
   for (let i = 0; i < data.length; i++) {
     const c = data[i];
-    message += `- <#${c.channel_id}> no more than once every *${c.frequency}* weeks.`;
+    message = `- <#${c.channel_id}> no more than once every *${c.frequency}* weeks.\n`;
     if (c.lastMatch) {
-      message += `You were last matched on ${c.lastMatch}`;
+      message += `You last matched on ${c.lastMatch} and your next won't happen before ${c.nextMatch}`;
     }
     list.blocks.push({
       type: "section",
@@ -63,7 +63,7 @@ export async function list(req: ICommand): Promise<string> {
       accessory: {
         type: "button",
         text: {
-          type: "mrkdwn",
+          type: "plain_text",
           text: "This button does nothing :rocket:",
           emoji: true,
         },
