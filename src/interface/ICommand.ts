@@ -1,4 +1,4 @@
-export interface ISlashCommand {
+export interface ICommand {
   token: String; // gIkuvaNzQIHg97ATvDxqgjtO
   team_id: String; // T0001
   team_domain: String; // example

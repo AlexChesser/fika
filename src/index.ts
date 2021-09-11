@@ -1,7 +1,6 @@
 import { APIGatewayEvent, Context, Callback } from "aws-lambda";
-import { Channel } from "./model/Channel";
-import { ISlashCommand } from "./interface/ISlashCommand";
-import * as ChannelController from "./controllers/ChannelController";
+import { ICommand } from "./interface/ICommand";
+import * as CommandController from "./controllers/CommandController";
 
 const querystring = require("querystring");
 
@@ -16,7 +15,7 @@ exports.handler = async (event: APIGatewayEvent, context: Context, callback: Cal
     statusCode: 0,
     body: "",
   };
-  const params = querystring.parse(event.body) as ISlashCommand;
+  const params = querystring.parse(event.body) as ICommand;
   if (process.env.VERIFICATION_TOKEN !== params.token) {
     res.statusCode = 401;
     res.body = "Unauthorized";
@@ -25,7 +24,7 @@ exports.handler = async (event: APIGatewayEvent, context: Context, callback: Cal
   res.statusCode = 200;
   switch(params.text){
     case "add":
-      res.body = await ChannelController.add(params);  
+      res.body = await CommandController.add(params);  
       break;
     case "remove":
       break;
