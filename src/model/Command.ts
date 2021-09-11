@@ -2,7 +2,7 @@ import { model, Schema, Document, Model } from "mongoose";
 import { IUser } from "../interface/IUser";
 import { ICommand } from "../interface/ICommand";
 
-/*
+/* sample incoming slack request
 token=gIkuvaNzQIHg97ATvDxqgjtO
 &team_id=T0001
 &team_domain=example
@@ -18,9 +18,7 @@ token=gIkuvaNzQIHg97ATvDxqgjtO
 &trigger_id=13345224609.738474920.8088930838d88f008e0
 &api_app_id=A123456
 */
-
 const CommandSchema = new Schema<ICommand>({
-  token: String,
   team_id: String,
   team_domain: String,
   enterprise_id: String,
@@ -31,14 +29,9 @@ const CommandSchema = new Schema<ICommand>({
   user_name: String,
   command: String,
   text: String,
-  response_url: String,
-  trigger_id: String,
-  api_app_id: String,
 });
-
 export interface ICommandDocument extends Document, ICommand {}
 export interface ICommandModel extends Model<ICommandDocument> {}
-
 export const Command = model<ICommandDocument>(
   "Command",
   CommandSchema

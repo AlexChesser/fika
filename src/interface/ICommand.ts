@@ -10,7 +10,7 @@ export interface ICommand {
   user_name: String; // Steve
   command: String; // /weather
   text: String; // 94070
-  response_url: String; // https://hooks.slack.com/commands/1234/5678
-  trigger_id: String; // 13345224609.738474920.8088930838d88f008e0
-  api_app_id: String; // A12345
+  response_url?: String; // https://hooks.slack.com/commands/1234/5678
+  trigger_id?: String; // 13345224609.738474920.8088930838d88f008e0
+  api_app_id?: String; // A12345
 }
