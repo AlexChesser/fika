@@ -11,8 +11,9 @@ export async function add(req: ICommand): Promise<string> {
     user_id: req.user_id,
   };
   await mongoose.connect(process.env.MONGODB_URI || "");
-  const command = await Command.findOne(key).exec();
-  await Command.updateOne(key, new Command({ req }), { upsert: true }).exec();
+  const command = new Command(req);
+  delete command["_id"];
+  await Command.updateOne(key, command, { upsert: true }).exec();
   message = "You have been added to the channel";
   return message;
 }
