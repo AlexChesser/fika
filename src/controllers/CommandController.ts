@@ -36,15 +36,42 @@ export async function list(req: ICommand): Promise<string> {
     team_id: req.team_id,
     user_id: req.user_id,
   }).exec();
-  message = "You have joined the following channels:\n";
+  // TODO build a slack response type
+  const list: any = {
+    blocks: [
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: "You have joined the following channels:",
+        },
+      },
+    ],
+  };
   for (let i = 0; i < data.length; i++) {
     const c = data[i];
     message += `<#${c.channel_id}> once every *${c.frequency}* weeks.`;
     if (c.lastMatch) {
       message += `You were last matched on ${c.lastMatch}`;
     }
-    message += "\n";
+    list.blocks.push({
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: message,
+      },
+      accessory: {
+        type: "button",
+        text: {
+          type: "mrkdwn",
+          text: "This button does nothing :rocket:",
+          emoji: true,
+        },
+        value: c.channel_id,
+        action_id: "leave",
+      },
+    });
   }
   mongoose.connection.close();
-  return message;
+  return JSON.stringify(list);
 }
