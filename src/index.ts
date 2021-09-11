@@ -61,7 +61,7 @@ exports.handler = async (event: APIGatewayEvent) => {
         res.headers = {
           "Content-Type": "application/json"
         }
-        res.body = await CommandController.list(params);
+        res.body = JSON.stringify(await CommandController.list(params));
         break;
       case "remove":
       res.body = await CommandController.remove(params);
