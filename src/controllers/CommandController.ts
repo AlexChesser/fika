@@ -50,7 +50,7 @@ export async function list(req: ICommand): Promise<string> {
   };
   for (let i = 0; i < data.length; i++) {
     const c = data[i];
-    message = `- <#${c.channel_id}> no more than once every *${c.frequency}* weeks.\n`;
+    message = `<#${c.channel_id}> no more than once every *${c.frequency}* weeks.\n`;
     if (c.lastMatch) {
       message += `You last matched on ${c.lastMatch} and your next won't happen before ${c.nextMatch}`;
     }
@@ -73,5 +73,5 @@ export async function list(req: ICommand): Promise<string> {
     });
   }
   mongoose.connection.close();
-  return JSON.stringify(list);
+  return list;
 }
