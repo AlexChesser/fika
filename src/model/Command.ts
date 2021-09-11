@@ -29,6 +29,8 @@ const CommandSchema = new Schema<ICommand>({
   user_name: String,
   command: String,
   text: String,
+  frequency: Number,
+  lastMatch: Date,
 });
 export interface ICommandDocument extends Document, ICommand {}
 export interface ICommandModel extends Model<ICommandDocument> {}

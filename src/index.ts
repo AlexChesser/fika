@@ -3,10 +3,31 @@ import { ICommand } from "./interface/ICommand";
 import * as CommandController from "./controllers/CommandController";
 
 const querystring = require("querystring");
+const usage = `*Usage*:
+\`/fika add [minimum number of weeks between matchups]\` eg: \`/fika 4\`
+\`/fika remove\` remove yourself from the current channel's matchups
+\`/fika list\` see a list of all the channels you've joined`;
 
 interface IResponse {
   statusCode: number;
   body: string;
+}
+
+function parseCommandText(text: String): string[] {
+  let parts = text.split(" ");
+  if (parts.length === 0) {
+    throw Error("InvalidArgumentException");
+  }
+  if (["add", "remove", "list"].indexOf(parts[0]) < 0) {
+    throw Error("InvalidArgumentException");
+  }
+  const IsAddCommand = parts[0] === "add";
+  const IncorrectNumberOfArguments = parts.length !== 2;
+  const SecondArgumentInvalid = !parseInt(parts[1]);
+  if (IsAddCommand && (IncorrectNumberOfArguments || SecondArgumentInvalid)) {
+    throw Error("InvalidArgumentException");
+  }
+  return parts;
 }
 
 // prettier-ignore
@@ -22,16 +43,23 @@ exports.handler = async (event: APIGatewayEvent, context: Context, callback: Cal
     return res;
   }
   res.statusCode = 200;
-  switch(params.text){
+  let textarray = [""];
+  try {
+     textarray = parseCommandText(params.text);
+  } catch (error) {
+    res.body = usage;
+    return res;
+  }
+  switch(textarray[0]){
     case "add":
-      res.body = await CommandController.add(params);  
+      res.body = await CommandController.add(params, parseInt(textarray[1]));  
       break;
     case "remove":
-      break;
-    case "list":
+    case "list":  
+      res.body = await CommandController[textarray[0]](params);  
       break;
     default:
-      res.body = "Sorry, I did not understand that, valid options are: add,remove,list";
+      res.body = usage;
       break;
   }
   return res;

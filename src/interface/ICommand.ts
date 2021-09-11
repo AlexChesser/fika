@@ -13,4 +13,6 @@ export interface ICommand {
   response_url?: String; // https://hooks.slack.com/commands/1234/5678
   trigger_id?: String; // 13345224609.738474920.8088930838d88f008e0
   api_app_id?: String; // A12345
+  frequency?: number;
+  lastMatch?: Date;
 }
