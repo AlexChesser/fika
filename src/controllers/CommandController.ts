@@ -50,7 +50,7 @@ export async function list(req: ICommand): Promise<string> {
   };
   for (let i = 0; i < data.length; i++) {
     const c = data[i];
-    message += `<#${c.channel_id}> once every *${c.frequency}* weeks.`;
+    message += `- <#${c.channel_id}> no more than once every *${c.frequency}* weeks.`;
     if (c.lastMatch) {
       message += `You were last matched on ${c.lastMatch}`;
     }
