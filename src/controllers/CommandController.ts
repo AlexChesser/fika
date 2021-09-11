@@ -12,6 +12,7 @@ export async function add(req: ICommand): Promise<string> {
   };
   await mongoose.connect(process.env.MONGODB_URI || "");
   const command = new Command(req as ICommandDocument).toObject();
+  delete command["token"];
   delete command["_id"];
   await Command.updateOne(key, command, { upsert: true }).exec();
   message = "You have been added to the channel";

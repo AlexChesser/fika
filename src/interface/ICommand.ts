@@ -1,5 +1,5 @@
 export interface ICommand {
-  token: String; // gIkuvaNzQIHg97ATvDxqgjtO
+  token?: String | null; // gIkuvaNzQIHg97ATvDxqgjtO
   team_id: String; // T0001
   team_domain: String; // example
   enterprise_id: String; // E0001
