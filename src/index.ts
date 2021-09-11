@@ -1,4 +1,4 @@
-import { APIGatewayEvent, Context, Callback } from "aws-lambda";
+import { APIGatewayEvent } from "aws-lambda";
 import { ICommand } from "./interface/ICommand";
 import * as CommandController from "./controllers/CommandController";
 
@@ -9,7 +9,7 @@ const usage = `*Usage*:
 \`/fika list\` see a list of all the channels you've joined`;
 
 interface IResponse {
-  header?: any;
+  headers?: any;
   statusCode: number;
   body: string;
 }
@@ -34,7 +34,7 @@ function parseCommandText(text: String): string[] {
 }
 
 // prettier-ignore
-exports.handler = async (event: APIGatewayEvent, context: Context, callback: Callback) => {
+exports.handler = async (event: APIGatewayEvent) => {
   const res : IResponse = {
     statusCode: 0,
     body: "",
@@ -58,11 +58,13 @@ exports.handler = async (event: APIGatewayEvent, context: Context, callback: Cal
       res.body = await CommandController.add(params, parseInt(textarray[1]));  
       break;
       case "list":
-        res.header = {
+        res.headers = {
           "Content-Type": "application/json"
-        }  
+        }
+        res.body = await CommandController.list(params);
+        break;
       case "remove":
-      res.body = await CommandController[textarray[0]](params);  
+      res.body = await CommandController.remove(params);
       break;
     default:
       res.body = usage;
