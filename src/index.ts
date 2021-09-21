@@ -3,6 +3,7 @@ import { ICommand } from "./interface/ICommand";
 import * as CommandController from "./controllers/CommandController";
 
 const querystring = require("querystring");
+// TODO: convert all text output to slack BLOCKS https://api.slack.com/block-kit
 const usage = `*Usage*:
 \`/fika add [minimum number of weeks between matchups]\` eg: \`/fika 4\`
 \`/fika remove\` remove yourself from the current channel's matchups
