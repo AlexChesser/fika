@@ -1,10 +1,11 @@
 {
 	"compilerOptions": {
-		"target": "es6",
+		"target": "esnext",
 		"module": "commonjs",
 		"strict": true,
 		"declaration": false,
-		"outDir": "./netlify/functions"
+		"outDir": "./netlify/functions",
+		"esModuleInterop": true
 	},
 	"include": [
 		"src/**/*"
