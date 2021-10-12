@@ -1,12 +1,15 @@
 {
-    "compilerOptions": { 
-      "target": "es6", 
+    "compilerOptions": {
+      "target": "es6",
       "module": "commonjs",
-      "strict": true, 
+      "strict": true,
       "declaration": false,
       "outDir": "./netlify/functions"
     },
-    "exclude": [
+	"include": [
+		"src/**/*"
+	],
+	"exclude": [
         "node_modules",
         "netlify"
     ]
