@@ -10,7 +10,7 @@ Intention of this project is to automatically generate small personal 1:1 meetin
 The current available functionality allows:
 - a user to add `/fika add` or remove `/fika remove` themselves from a channel in slack.
 - a user to view the current list of subscriptions `/fika list`
-- automaticaly create pairings via an endpoint `/slackbot/assign-groups`
+- automaticaly create pairings via an endpoint `/index/assign-groups`
 
 Future enhancements:
 - generate pairings based on preferences (channel/frequency)

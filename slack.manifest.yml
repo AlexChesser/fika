@@ -11,7 +11,7 @@ features:
     always_online: false
   slash_commands:
     - command: /fika
-      url: https://[generatedkey].netlify.live/.netlify/functions/slackbot
+      url: https://[generatedkey].netlify.live/.netlify/functions/index
       description: Fika slash commands
       should_escape: false
 oauth_config:
