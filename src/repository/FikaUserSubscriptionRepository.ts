@@ -15,7 +15,7 @@ export async function add(req: any, weeks: number = 4): Promise<boolean> {
 		{ ...command, frequency: weeks },
 		{ upsert: true }
 	).exec();
-	mongoose.connection.close();
+	await mongoose.connection.close();
 	return true;
 }
 
@@ -23,7 +23,7 @@ export async function remove(req: any): Promise<boolean> {
 	const key = makeCommandKey(req);
 	await mongoose.connect(process.env.MONGODB_URI || "");
 	await FikaUserSubscriptionModel.deleteOne(key).exec();
-	mongoose.connection.close();
+	await mongoose.connection.close();
 	return true;
 }
 
@@ -33,14 +33,14 @@ export async function getListForUserID(req: any): Promise<(IFikaUserSubscription
 		team_id: req.team_id,
 		user_id: req.user_id,
 	}).exec();
-	mongoose.connection.close();
+	await mongoose.connection.close();
 	return data;
 }
 
 export async function getActiveSubscriptions(): Promise<(IFikaUserSubscriptionDocument & { _id: any })[]> {
 	await mongoose.connect(process.env.MONGODB_URI || "");
 	const data = await FikaUserSubscriptionModel.find().exec();
-	mongoose.connection.close();
+	await mongoose.connection.close();
 	return data;
 }
 

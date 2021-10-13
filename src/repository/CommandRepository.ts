@@ -12,6 +12,6 @@ export async function add(req: any): Promise<boolean> {
 	let r = new CommandModel(document);
 	await r.save();
 
-	mongoose.connection.close();
+	await mongoose.connection.close();
 	return true;
 }
