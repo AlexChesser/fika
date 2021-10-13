@@ -1,0 +1,28 @@
+_metadata:
+  major_version: 1
+  minor_version: 1
+display_information:
+  name: Fika
+  description: Fika command
+  background_color: "#000000"
+features:
+  bot_user:
+    display_name: Fika
+    always_online: false
+  slash_commands:
+    - command: /fika
+      url: https://[generatedkey].netlify.live/.netlify/functions/index
+      description: Fika slash commands
+      should_escape: false
+oauth_config:
+  scopes:
+    bot:
+      - channels:history
+      - chat:write
+      - commands
+      - im:write
+      - channels:manage
+settings:
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  token_rotation_enabled: false
