@@ -4,7 +4,7 @@ import { App, ExpressReceiver, ReceiverEvent } from "@slack/bolt";
 import * as FikaUserSubscriptionCommandController from "./controllers/FikaUserSubscriptionCommandController";
 import * as MatchingController from "./controllers/MatchingController"
 
-let ROOT_PATH = '/.netlify/functions/slackbot';
+let ROOT_PATH = '/.netlify/functions/index';
 
 // Initializes your app with your bot token and signing secret
 const expressReceiver = new ExpressReceiver({
@@ -19,7 +19,7 @@ const app = new App({
 });
 
 let SLASH_COMMANDS = {
-	FIKA_SLASH_COMMAND_USERMANAGEMENT: "/fika",
+	FIKA_SLASH_COMMAND_USERMANAGEMENT: "/tricia",
 };
 app.command(
 	SLASH_COMMANDS.FIKA_SLASH_COMMAND_USERMANAGEMENT,
@@ -56,21 +56,23 @@ function parseRequestBody(stringBody: string | null, contentType: string | undef
 	}
 }
 
-
 export async function handler(event: APIGatewayEvent, context: Context) {
+	console.log("event:", event);
 	try {
+		// process any events from 3rd party calls
+		if (event.httpMethod === 'GET' && event.path === `${ROOT_PATH}/assign-groups`) {
+			console.log("process assign-groups")
+			return MatchingController.processCommand(app.client);
+		}
+
 		// verify incoming request is valid
 		const payload = parseRequestBody(event.body, event.headers["content-type"]);
+		console.log("payload:", payload);
 		if (payload && payload.type && payload.type === "url_verification") {
 			return {
 				statusCode: 200,
 				body: payload.challenge,
 			};
-		}
-
-		// process any events from 3rd party calls
-		if (event.httpMethod === 'GET' && event.path === `${ROOT_PATH}/assign-groups`) {
-			return MatchingController.processCommand(app.client);
 		}
 
 		// process any events coming from Slack
