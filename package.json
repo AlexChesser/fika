@@ -7,7 +7,7 @@
 		"test": "jest"
 	},
 	"author": {
-		"name": "Alexander Chesser & Patricia MacPherson"
+		"name": "Alexander Chesser & Patricia M."
 	},
 	"devDependencies": {
 		"@types/aws-lambda": "^8.10.83",
