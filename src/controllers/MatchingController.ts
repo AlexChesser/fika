@@ -17,7 +17,8 @@ var sendDMToGroup = async (client: WebClient, users: string[]) => {
 		}
 
 		// post message to IM channel
-		client.chat.postMessage({
+		console.log("post message to channel", result.channel!!!.id!!!)
+		await client.chat.postMessage({
 			channel: result.channel!!!.id!!!,
 			text: msg
 		})
@@ -30,20 +31,27 @@ var sendDMToGroup = async (client: WebClient, users: string[]) => {
 
 export var processCommand = async (client: WebClient) => {
 	// get all active subscriptions
+	console.log("fetch subscriptions")
 	let data = await FikaUserSubscriptionRepository.getActiveSubscriptions();
 
 	// randomly assign groups
+	console.log("generate matches")
 	let random = MatchingService.generateMatches(data, 2);
 
 	// for each group
 	// - save in DB with expiration date 7 days from now
 	// - then send direct message to group to coordinate meetup
 	for (var group of random) {
+		// save group match in db
 		group.created = new Date();
 		group.expired = new Date(group.created.setDate(group.created.getDate() + 7))
-		FikaGroupRepository.add(group);
+		console.log("create group:", group);
+		await FikaGroupRepository.add(group);
+
+		// send dm to group
 		let users = group.members.map(r => r.user_id + "");
-		sendDMToGroup(client, users);
+		console.log("send dm to users:", users);
+		await sendDMToGroup(client, users);
 	}
 
 	return {

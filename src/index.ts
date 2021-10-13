@@ -57,7 +57,6 @@ function parseRequestBody(stringBody: string | null, contentType: string | undef
 }
 
 export async function handler(event: APIGatewayEvent, context: Context) {
-	console.log("event:", event);
 	try {
 		// process any events from 3rd party calls
 		if (event.httpMethod === 'GET' && event.path === `${ROOT_PATH}/assign-groups`) {
