@@ -17,7 +17,7 @@ Future enhancements:
 
 
 ## Built With
-- NodeJS
+- NodeJS (Node version 12 as Netlify only supports Node 12)
 - MongoDB using mongoose
 - Free-tier hosting on netlify
 
