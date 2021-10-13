@@ -1,0 +1,24 @@
+# .github/workflows/scheduled-builds.yml
+name: Trigger Slack Group assignments on a CRON Schedule
+
+on:
+  schedule:
+    # Runs "at minute 55 past every hour" (see https://crontab.guru)
+    - cron: '* * * * *'
+jobs:
+  build:
+    name: Trigger Salck group assignments
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered on schedule."
+
+      - env:
+          ASSIGN_GROUPS_ENDPOINT: ${{secrets.ASSIGN_GROUPS_ENDPOINT}}
+        run: echo "netlify url is $ASSIGN_GROUPS_ENDPOINT"
+
+
+      # Hit the webhook endpoint to Assign Groups
+      - name: cURL request
+        env:
+          ASSIGN_GROUPS_ENDPOINT: ${{secrets.ASSIGN_GROUPS_ENDPOINT}}
+        run: curl $ASSIGN_GROUPS_ENDPOINT

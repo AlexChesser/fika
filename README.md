@@ -91,6 +91,11 @@ netlify dev --live
 5. Update Slack command endpoint to point to generated netlify url
 
 
+### Assign Groups Scheduled Task
+* There is a github action set for a scheduled task.  Currently it is set to run every minute, however, github changes that frequency to every 10 minutes or so.
+* To setup the github action, create an environment variable ASSIGN_GROUPS_ENDPOINT pointing to the netlify endpoint for assign groups.
+
+
 # External Resources
 * [Get Started on Netlify](https://www.netlify.com/blog/2016/09/29/a-step-by-step-guide-deploying-on-netlify/)
 * [Netlify and MongoDB Connection](https://stephencook.dev/blog/netlify-mongodb/)
