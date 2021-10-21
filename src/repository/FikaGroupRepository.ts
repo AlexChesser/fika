@@ -1,16 +1,30 @@
 import mongoose = require("mongoose");
-import { IFikaGroupDocument, FikaGroupModel } from "../model/FikaGroup";
+import { makeFikaGroupKey, IFikaGroupDocument, FikaGroupModel } from "../model/FikaGroup";
 
 /**
  * Database Repository class for Fika Groups
  */
-export async function add(req: any): Promise<boolean> {
-	await mongoose.connect(process.env.MONGODB_URI || "");
+export async function upsert(req: any): Promise<boolean> {
+	const key = makeFikaGroupKey(req);
 
 	let document = req as IFikaGroupDocument;
-	let r = new FikaGroupModel(document);
-	await r.save();
+	const command = new FikaGroupModel(document).toObject();
+	delete command["_id"];
+	await FikaGroupModel.updateOne(
+		key,
+		command,
+		{ upsert: true }
+	).exec();
 
-	await mongoose.connection.close();
 	return true;
+}
+
+export async function findPendingDMs(): Promise<(IFikaGroupDocument & { _id: any })[]> {
+	let data = await FikaGroupModel.find({
+		notified: null, // has not been notified
+		expired: { // has not expired
+			"$gt": new Date()
+		}
+	}).exec();
+	return data;
 }

@@ -1,12 +1,18 @@
+import { logger } from './logger';
+import mongoose = require("mongoose");
+
+import * as APP_SETTINGS from './app_settings';
 import { APIGatewayEvent, Context } from "aws-lambda";
 import { App, ExpressReceiver, ReceiverEvent } from "@slack/bolt";
 
 import * as FikaUserSubscriptionCommandController from "./controllers/FikaUserSubscriptionCommandController";
-import * as MatchingController from "./controllers/MatchingController"
+import * as AssignGroupsController from "./controllers/AssignGroupsController"
+import * as SendDMController from "./controllers/SendDMController"
 
-let ROOT_PATH = '/.netlify/functions/index';
 
-// Initializes your app with your bot token and signing secret
+/**
+ * Initialize Slack Bot communication with bot token and signing secret
+ */
 const expressReceiver = new ExpressReceiver({
 	signingSecret: `${process.env.SLACK_SIGNING_SECRET}`,
 	processBeforeResponse: true,
@@ -18,11 +24,12 @@ const app = new App({
 	receiver: expressReceiver
 });
 
-let SLASH_COMMANDS = {
-	FIKA_SLASH_COMMAND_USERMANAGEMENT: "/tricia",
-};
+
+/**
+ * Configure Slack Bot Commands
+ */
 app.command(
-	SLASH_COMMANDS.FIKA_SLASH_COMMAND_USERMANAGEMENT,
+	APP_SETTINGS.config.FIKA_SLASH_COMMAND_USERMANAGEMENT,
 	async ({ body, ack, respond, client }) => {
 		return FikaUserSubscriptionCommandController.processCommand(
 			body,
@@ -33,6 +40,9 @@ app.command(
 	}
 );
 
+/**
+ * Helper function to parse request body.  Depending if the request is coming from slackbot command, or coming from slackbot event, the body is different
+ */
 function parseRequestBody(stringBody: string | null, contentType: string | undefined) {
 	try {
 		let inputStringBody: string = stringBody ?? "";
@@ -56,17 +66,34 @@ function parseRequestBody(stringBody: string | null, contentType: string | undef
 	}
 }
 
+/**
+ * Main handler for all incoming events
+ *
+ * Handles:
+ *  * slack url-verification requests
+ * 	* slack commands
+ *  * external requests to trigger scheduled jobs.
+ * 		- Ideally, netlify would allow us to create a cron job, but it doesnt.  Thus creating an endpoint for github actions to hit.
+ */
 export async function handler(event: APIGatewayEvent, context: Context) {
 	try {
+		await mongoose.connect(process.env.MONGODB_URI || "");
+
 		// process any events from 3rd party calls
-		if (event.httpMethod === 'GET' && event.path === `${ROOT_PATH}/assign-groups`) {
-			console.log("process assign-groups")
-			return MatchingController.processCommand(app.client);
+		if (event.httpMethod === 'GET' && event.path === APP_SETTINGS.config.ASSIGN_GROUPS_PATH) {
+			logger.info("process assign-groups");
+			return AssignGroupsController.processCommand();
 		}
+		// process any events from 3rd party calls
+		if (event.httpMethod === 'GET' && event.path === APP_SETTINGS.config.SEND_DMS_PATH) {
+			logger.info("process sending dms back to slack");
+			return SendDMController.processCommand(app.client);
+		}
+
 
 		// verify incoming request is valid
 		const payload = parseRequestBody(event.body, event.headers["content-type"]);
-		console.log("payload:", payload);
+		logger.info("payload:", payload);
 		if (payload && payload.type && payload.type === "url_verification") {
 			return {
 				statusCode: 200,
@@ -89,11 +116,16 @@ export async function handler(event: APIGatewayEvent, context: Context) {
 		};
 		await app.processEvent(slackEvent);
 
+		await mongoose.connection.close();
+
 		return {
 			statusCode: 200,
 			body: "",
 		};
 	} catch (e) {
+		logger.log('error', "There was an unexpected error: ", e);
+		await mongoose.connection.close();
+
 		return {
 			statusCode: 500,
 			body: "There was an unexpected error:" + e,

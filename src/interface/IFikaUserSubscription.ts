@@ -6,8 +6,5 @@ export interface IFikaUserSubscription {
 	channel_name: String;
 
 	// user subscription preferences
-	// TODO: look to leverage or not
-	frequency?: number;
-	lastMatch?: Date;
-	nextMatch?: Date;
+	frequency: number;
 }

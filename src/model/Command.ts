@@ -27,10 +27,8 @@ const CommandSchema = new Schema<ICommand>({
 	enterprise_id: String,
 	enterprise_name: String,
 
-	is_enterprise_install: String,
-
-	timestamp: Date
-});
+	is_enterprise_install: String
+}, { timestamps: true });
 
 export interface ICommandDocument extends Document, ICommand { }
 export interface ICommandModel extends Model<ICommandDocument> { }

@@ -1,8 +1,8 @@
-import * as MatchingService from './MatchingService';
-import { IFikaUserSubscription } from '../interface/IFikaUserSubscription'
-import { FikaUserSubscriptionModel } from '../model/FikaUserSubscription'
-import { IFikaGroup, IFikaGroupMember } from '../interface/IFikaGroup'
-import { FikaGroupModel, FikaGroupMemberModel } from '../model/FikaGroup'
+import * as MatchingService from '../src/service/MatchingService';
+import { IFikaUserSubscription } from '../src/interface/IFikaUserSubscription'
+import { FikaUserSubscriptionModel } from '../src/model/FikaUserSubscription'
+import { IFikaGroup, IFikaGroupMember } from '../src/interface/IFikaGroup'
+import { FikaGroupModel, FikaGroupMemberModel } from '../src/model/FikaGroup'
 
 let cleanObject=(a:any)=>{
 	let x = JSON.parse(JSON.stringify(a));
@@ -89,7 +89,7 @@ testsGroups.forEach((testdata: any) => {
 	var expectedPairs: string[][] = testdata[i++];
 
 	let fullTestName = `When calling service with ${numOfUsers} users, with size ${groupLength} then should get ${numOfPairs} matches`;
-	test.only(fullTestName, async function () {
+	test(fullTestName, async function () {
 		// arrange
 		let list = createUserSubscriptions(numOfUsers);
 

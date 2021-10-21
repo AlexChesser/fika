@@ -15,7 +15,7 @@ interface IMatchKey {
 	user_id: String;
 }
 
-export function makeCommandKey(req: IFikaUserSubscription): IMatchKey {
+export function makeFikaUserSubscriptionKey(req: IFikaUserSubscription): IMatchKey {
 	return {
 		team_id: req.team_id,
 		channel_id: req.channel_id,
@@ -32,11 +32,9 @@ const FikaUserSubscriptionSchema = new Schema<IFikaUserSubscription>({
 	user_id: String,
 	user_name: String,
 
-	frequency: Number,
-	lastMatch: Date,
-	nextMatch: Date,
-});
-FikaUserSubscriptionSchema.index({ team_id: 1, channel_id: 1, nextMatch: 1 });
+	frequency: Number
+
+}, { timestamps: true });
 FikaUserSubscriptionSchema.index({ team_id: 1, channel_id: 1, user_id: 1 });
 
 export interface IFikaUserSubscriptionDocument extends Document, IFikaUserSubscription { }

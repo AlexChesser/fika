@@ -8,8 +8,8 @@ export interface IFikaGroup {
 	channel_name: String;
 
 	members: IFikaGroupMember[];
+	members_key: String;
 
-	// user subscription preferences
-	created?: Date;
-	expired?: Date;
+	expired: Date;
+	notified: Date | null;
 }

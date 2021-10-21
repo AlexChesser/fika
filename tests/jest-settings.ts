@@ -1,0 +1,8 @@
+export const CONFIG = {
+	MONGODB_URI: "",
+	SEND_DM_TO_GROUP: "false",
+	OVERRIDE_USER_ID: "",
+	SLACK_SIGNING_SECRET:'',
+	SLACK_BOT_TOKEN:'',
+};
+

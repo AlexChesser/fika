@@ -1,0 +1,18 @@
+# .github/workflows/scheduled-builds.yml
+name: Trigger Slack Group assignments on a CRON Schedule
+on:
+  schedule:
+    # Runs "at minute 55 past every hour" (see https://crontab.guru)
+    - cron: '* * * * *'
+jobs:
+  send-dm:
+    name: Trigger Slack send dm's
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered on schedule."
+
+      # Hit the webhook endpoint to Assign Groups
+      - name: cURL request
+        env:
+          SEND_DMS_ENDPOINT: ${{secrets.SEND_DMS_ENDPOINT}}
+        run: curl $SEND_DMS_ENDPOINT

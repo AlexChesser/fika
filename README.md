@@ -11,16 +11,13 @@ The current available functionality allows:
 - a user to add `/fika add` or remove `/fika remove` themselves from a channel in slack.
 - a user to view the current list of subscriptions `/fika list`
 - automaticaly create pairings via an endpoint `/index/assign-groups`
-
-Future enhancements:
-- generate pairings based on preferences (channel/frequency)
+- automaticaly send direct messages to pairings via an endpoint `/index/send-dms`
 
 
 ## Built With
 - NodeJS (Node version 12 as Netlify only supports Node 12)
 - MongoDB using mongoose
 - Free-tier hosting on netlify
-
 
 # Getting Started
 To get a local copy up and running follow these steps.
@@ -91,9 +88,41 @@ netlify dev --live
 5. Update Slack command endpoint to point to generated netlify url
 
 
-### Assign Groups Scheduled Task
-* There is a github action set for a scheduled task.  Currently it is set to run every minute, however, github changes that frequency to every 10 minutes or so.
-* To setup the github action, create an environment variable ASSIGN_GROUPS_ENDPOINT pointing to the netlify endpoint for assign groups.
+### GitHub Actions
+* Leverage github action to trigger off scheduled task.
+* Since netlify doesn't allow us to created scheduled functions, this is a cheap way of triggering endpoints that will run our scheduled functions
+* Scheduled tasks are configured under .github/workflows
+* Tasks are currently set to run every minute, however, github changes * to a frequency they prefer which seems to be about 10 minutes
+
+#### Assign Groups Scheduled Task
+* Create an environment variable ASSIGN_GROUPS_ENDPOINT pointing to the netlify endpoint for assign groups.
+
+#### Send DM's Scheduled Task
+* Create an environment variable SEND_DMS_ENDPOINT pointing to the netlify endpoint for assign groups.
+
+
+### Configure Run tests
+* Need to update jest-settings.ts to include db connection string
+* To ignore future changes to jest-settings.ts, run
+	* git update-index --skip-worktree tests/jest-settings.ts
+* To stop ignoring file
+	* git update-index --no-skip-worktree tests/jest-settings.ts
+
+```
+export const CONFIG = {
+	MONGODB_URI: "",
+	SEND_DM_TO_GROUP: "false",
+	OVERRIDE_USER_ID: "",
+	SLACK_SIGNING_SECRET:'',
+	SLACK_BOT_TOKEN:'',
+};
+```
+
+
+### Run tests
+* npm run test
+* npm run test -- -t 'Your test name'
+* npm run test -- /path/to/test
 
 
 # External Resources
