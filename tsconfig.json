@@ -1,13 +1,3 @@
 {
-    "compilerOptions": { 
-      "target": "es6", 
-      "module": "commonjs",
-      "strict": true, 
-      "declaration": false,
-      "outDir": "./netlify/functions"
-    },
-    "exclude": [
-        "node_modules",
-        "netlify"
-    ]
-  }
+	"extends": "./tsconfig.common.json"
+}
