@@ -1,8 +1,8 @@
-import { logger } from '../logger';
+import { logger } from '../utils/logger';
 import * as FikaUserSubscriptionRepository from "../repository/FikaUserSubscriptionRepository";
 import * as FikaGroupRepository from "../repository/FikaGroupRepository";
 import * as MatchingService from "../service/MatchingService"
-import * as APP_SETTINGS from '../app_settings';
+import * as APP_SETTINGS from '../utils/app_settings';
 
 
 /**

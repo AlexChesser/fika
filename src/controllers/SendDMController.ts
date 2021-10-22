@@ -1,8 +1,8 @@
-import { logger } from '../logger';
+import { logger } from '../utils/logger';
 import { WebClient } from "@slack/web-api";
 import * as FikaGroupRepository from "../repository/FikaGroupRepository";
 
-import * as APP_SETTINGS from '../app_settings';
+import * as APP_SETTINGS from '../utils/app_settings';
 
 var sendDMToGroup = async (client: WebClient, users: string[]) => {
 	let sendDMToGroup = (process.env.SEND_DM_TO_GROUP || "true").toLowerCase() == "true";

@@ -1,7 +1,7 @@
-import { logger } from './logger';
+import { logger } from './utils/logger';
 import mongoose = require("mongoose");
 
-import * as APP_SETTINGS from './app_settings';
+import * as APP_SETTINGS from './utils/app_settings';
 import { APIGatewayEvent, Context } from "aws-lambda";
 import { App, ExpressReceiver, ReceiverEvent } from "@slack/bolt";
 

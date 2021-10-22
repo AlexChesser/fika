@@ -1,5 +1,5 @@
-import { logger } from '../logger';
-import * as APP_SETTINGS from '../app_settings';
+import { logger } from '../utils/logger';
+import * as APP_SETTINGS from '../utils/app_settings';
 
 import { AckFn, RespondArguments, RespondFn, SlashCommand } from "@slack/bolt";
 import { WebClient } from "@slack/web-api";
