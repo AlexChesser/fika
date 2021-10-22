@@ -8,8 +8,8 @@ export interface IFikaGroup {
 	channel_name: String;
 
 	members: IFikaGroupMember[];
-	members_key: String;
+	members_key: String; // helper field to make sure members.user_ids + team_id + channel_id + expired are unique
 
-	expired: Date;
-	notified: Date | null;
+	expired: Date; // Indicates how long this group is active
+	notified: Date | null; // Indicates when direct message between members has been sent
 }
