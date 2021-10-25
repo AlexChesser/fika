@@ -1,7 +1,7 @@
-import { logger } from './logger';
+import { logger } from './utils/logger';
 import mongoose = require("mongoose");
 
-import * as APP_SETTINGS from './app_settings';
+import * as APP_SETTINGS from './utils/app_settings';
 import { APIGatewayEvent, Context } from "aws-lambda";
 import { App, ExpressReceiver, ReceiverEvent } from "@slack/bolt";
 
@@ -31,7 +31,7 @@ const app = new App({
 app.command(
 	APP_SETTINGS.config.FIKA_SLASH_COMMAND_USERMANAGEMENT,
 	async ({ body, ack, respond, client }) => {
-		return FikaUserSubscriptionCommandController.processCommand(
+		return await FikaUserSubscriptionCommandController.processCommand(
 			body,
 			ack,
 			respond,
@@ -82,12 +82,12 @@ export async function handler(event: APIGatewayEvent, context: Context) {
 		// process any events from 3rd party calls
 		if (event.httpMethod === 'GET' && event.path === APP_SETTINGS.config.ASSIGN_GROUPS_PATH) {
 			logger.info("process assign-groups");
-			return AssignGroupsController.processCommand();
+			return await AssignGroupsController.processCommand();
 		}
 		// process any events from 3rd party calls
 		if (event.httpMethod === 'GET' && event.path === APP_SETTINGS.config.SEND_DMS_PATH) {
 			logger.info("process sending dms back to slack");
-			return SendDMController.processCommand(app.client);
+			return await SendDMController.processCommand(app.client);
 		}
 
 
@@ -123,7 +123,7 @@ export async function handler(event: APIGatewayEvent, context: Context) {
 			body: "",
 		};
 	} catch (e) {
-		logger.log('error', "There was an unexpected error: ", e);
+		logger.error("There was an unexpected error: ", e);
 		await mongoose.connection.close();
 
 		return {

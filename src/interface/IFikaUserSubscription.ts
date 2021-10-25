@@ -6,5 +6,5 @@ export interface IFikaUserSubscription {
 	channel_name: String;
 
 	// user subscription preferences
-	frequency: number;
+	frequency: number; // how many pairings does this user want for this channel
 }

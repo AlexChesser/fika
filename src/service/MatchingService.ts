@@ -6,11 +6,7 @@ import { FikaGroupModel, FikaGroupMemberModel } from '../model/FikaGroup'
 /**
  * Matching Service
  * - given a collection of active user subscriptions, randomly assign them by n size groups
- *
- * TODO:
- * - determine if we need to set preferences based on channels/teams
- * - determine logic to match based on frequency preferences and last/next match times
- * - Might need to review Stable Marriage algorithm, or the Room Mate algorithm.
+ * - assumes incoming collection is already paritioned into valid group of users
  */
 
 

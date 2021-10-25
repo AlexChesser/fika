@@ -5,7 +5,7 @@ import { makeFikaUserSubscriptionKey, IFikaUserSubscriptionDocument, FikaUserSub
 /**
  * Database Repository class for Fika User Subscriptions
  */
-export async function add(req: any, weeks: number = 4): Promise<boolean> {
+export async function add(req: any, frequency: number = 4): Promise<boolean> {
 	const key = makeFikaUserSubscriptionKey(req);
 
 	let document = req as IFikaUserSubscriptionDocument;
@@ -13,7 +13,7 @@ export async function add(req: any, weeks: number = 4): Promise<boolean> {
 	delete command["_id"];
 	await FikaUserSubscriptionModel.updateOne(
 		key,
-		{ ...command, frequency: weeks },
+		{ ...command, frequency: frequency },
 		{ upsert: true }
 	).exec();
 
@@ -137,10 +137,6 @@ export async function getActiveSubscriptions(date: Date = new Date()): Promise<I
 		}
 	];
 
-	console.dir(pipeline, { depth: null });
-
-
 	let data = await FikaUserSubscriptionModel.aggregate(pipeline);
-
 	return data;
 }

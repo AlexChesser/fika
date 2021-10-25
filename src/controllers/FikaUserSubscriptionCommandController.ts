@@ -1,5 +1,5 @@
-import { logger } from '../logger';
-import * as APP_SETTINGS from '../app_settings';
+import { logger } from '../utils/logger';
+import * as APP_SETTINGS from '../utils/app_settings';
 
 import { AckFn, RespondArguments, RespondFn, SlashCommand } from "@slack/bolt";
 import { WebClient } from "@slack/web-api";
@@ -21,26 +21,26 @@ const logCommand = async (body: SlashCommand) => {
 
 const processAdd = async (body: SlashCommand, respond: RespondFn, params: string[]) => {
 	logger.info("Adding user subscription")
-	var numOfWeeks = APP_SETTINGS.config.DEFAULT_FREQUENCY;
+	var frequency = APP_SETTINGS.config.DEFAULT_FREQUENCY;
 	if (params.length >= 2) {
-		numOfWeeks = parseNumber(params[1]);
+		frequency = parseNumber(params[1]);
 	}
 
-	if (!(await FikaUserSubscriptionRepository.add(body, numOfWeeks))) {
-		await respond("Could not process request");
+	if (!(await FikaUserSubscriptionRepository.add(body, frequency))) {
+		await respond(APP_SETTINGS.config.ADD_FAILURE_MESSAGE());
 		return;
 	}
 
-	await respond(` 👍 Adding you to group at ${numOfWeeks} num of weeks interval`);
+	await respond(APP_SETTINGS.config.ADD_SUCCESS_MESSAGE(frequency, body.channel_id));
 };
 
 const processRemove = async (body: SlashCommand, respond: RespondFn) => {
 	logger.info("Removing user subscription")
 	if (!(await FikaUserSubscriptionRepository.remove(body))) {
-		await respond("Could not process request");
+		await respond(APP_SETTINGS.config.REMOVE_FAILURE_MESSAGE());
 		return;
 	}
-	await respond(`Removing you from this meetup channel`);
+	await respond(APP_SETTINGS.config.REMOVE_SUCCESS_MESSAGE(body.channel_id));
 };
 
 const processList = async (body: SlashCommand, respond: RespondFn) => {
@@ -61,7 +61,7 @@ const processList = async (body: SlashCommand, respond: RespondFn) => {
 	};
 	for (let i = 0; i < data.length; i++) {
 		const c = data[i];
-		let message = `<#${c.channel_id}> no more than once every *${c.frequency}* weeks.\n`;
+		let message = `<#${c.channel_id}> with a frequency of *${c.frequency}* active pairing(s).\n`;
 		list.blocks.push({
 			type: "section",
 			text: {
@@ -101,7 +101,7 @@ export var processCommand = async (body: SlashCommand, ack: AckFn<string | Respo
 
 	var action = params[0].toLowerCase();
 	// invalid command, show usage
-	if (["add", "remove", "list"].indexOf(action) < 0) {
+	if ([APP_SETTINGS.config.FIKA_COMMAND_ADD, APP_SETTINGS.config.FIKA_COMMAND_REMOVE, APP_SETTINGS.config.FIKA_COMMAND_LIST].indexOf(action) < 0) {
 		await respond(APP_SETTINGS.config.SLASH_COMMAND_USAGE);
 		return;
 	}
@@ -109,13 +109,13 @@ export var processCommand = async (body: SlashCommand, ack: AckFn<string | Respo
 	// else this is a valid command
 	try {
 		switch (action) {
-			case "add":
+			case APP_SETTINGS.config.FIKA_COMMAND_ADD:
 				await processAdd(body, respond, params);
 				break;
-			case "remove":
+			case APP_SETTINGS.config.FIKA_COMMAND_REMOVE:
 				await processRemove(body, respond);
 				break;
-			case "list":
+			case APP_SETTINGS.config.FIKA_COMMAND_LIST:
 				await processList(body, respond);
 				break;
 			default:
