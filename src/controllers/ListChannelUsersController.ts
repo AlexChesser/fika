@@ -9,13 +9,16 @@ export var sendUserlist = async (body: SlashCommand, respond: RespondFn, client:
     logger.info("users", JSON.stringify(users))
     // send to requesting user
     // end request
-    await respond(JSON.stringify(users))
-    await client.chat.postMessage({
-        text: JSON.stringify(users),
-        channel: body.channel_id
-    })
+    if(users.ok){
+        const members = users.members?.join("\n") || "no members in channel";
+        await client.chat.postMessage({
+            text: members,
+            channel: body.channel_id
+        })
+        await respond(members);
+    }
 	return {
 		statusCode: 200,
-		body: "send-dm",
+		body: "list-channel-users",
 	};
 };

@@ -15,6 +15,7 @@ export var processCommand = async (body: SlashCommand, ack: AckFn<string | Respo
 
 	// invalid number of arguments, show usage
 	if (params.length <= 0) {
+		console.log("no params")
 		await respond(APP_SETTINGS.config.SLASH_COMMAND_USAGE);
 		return;
 	}
@@ -36,6 +37,7 @@ export var processCommand = async (body: SlashCommand, ack: AckFn<string | Respo
 				await respond(APP_SETTINGS.config.SLASH_COMMAND_USAGE);
 				break;
 		}
+		return;
 	} catch (e) {
 		logger.error("error:", e);
 		await respond(APP_SETTINGS.config.SLASH_COMMAND_USAGE);
