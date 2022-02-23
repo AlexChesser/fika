@@ -6,9 +6,8 @@ import { WebClient } from "@slack/web-api";
 import { sendUserlist } from './ListChannelUsersController';
 
 export var processCommand = async (body: SlashCommand, ack: AckFn<string | RespondArguments>, respond: RespondFn, client: WebClient) => {
-	logger.info("process commands")
+	logger.info("process commands", JSON.stringify(body))
 	await ack();
-	logger.info(body)
 	var params: string[] = [];
 	if (body.text != "") {
 		params = body.text.split(" ");
@@ -22,7 +21,7 @@ export var processCommand = async (body: SlashCommand, ack: AckFn<string | Respo
 
 	var action = params[0].toLowerCase();
 	// invalid command, show usage
-	if ([APP_SETTINGS.config.FIKA_COMMAND_ADD, APP_SETTINGS.config.FIKA_COMMAND_REMOVE, APP_SETTINGS.config.FIKA_COMMAND_LIST].indexOf(action) < 0) {
+	if ([APP_SETTINGS.config.FIKA_COMMAND_USERS].indexOf(action) < 0) {
 		await respond(APP_SETTINGS.config.SLASH_COMMAND_USAGE);
 		return;
 	}
