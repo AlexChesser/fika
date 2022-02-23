@@ -46,7 +46,6 @@ app.command(
 function parseRequestBody(stringBody: string | null, contentType: string | undefined) {
 	try {
 		let inputStringBody: string = stringBody ?? "";
-
 		// depending on incoming request, body can be formated as urlencoded form elements or just decoded string
 		// determine appropriate format to decode body content
 		if (contentType && contentType === "application/x-www-form-urlencoded") {

@@ -5,6 +5,7 @@ import { AckFn, RespondArguments, RespondFn, SlashCommand } from "@slack/bolt";
 import { WebClient } from "@slack/web-api";
 import * as FikaUserSubscriptionRepository from "../repository/FikaUserSubscriptionRepository";
 import * as CommandRepository from "../repository/CommandRepository";
+import { sendUserlist } from './ListChannelUsersController';
 
 const parseNumber = (s: string): number => {
 	try {
@@ -109,15 +110,18 @@ export var processCommand = async (body: SlashCommand, ack: AckFn<string | Respo
 	// else this is a valid command
 	try {
 		switch (action) {
-			case APP_SETTINGS.config.FIKA_COMMAND_ADD:
-				await processAdd(body, respond, params);
+			case APP_SETTINGS.config.FIKA_COMMAND_USERS:
+				await sendUserlist(body, respond, client);
 				break;
-			case APP_SETTINGS.config.FIKA_COMMAND_REMOVE:
-				await processRemove(body, respond);
-				break;
-			case APP_SETTINGS.config.FIKA_COMMAND_LIST:
-				await processList(body, respond);
-				break;
+			// case APP_SETTINGS.config.FIKA_COMMAND_ADD:
+			// 	await processAdd(body, respond, params);
+			// 	break;
+			// case APP_SETTINGS.config.FIKA_COMMAND_REMOVE:
+			// 	await processRemove(body, respond);
+			// 	break;
+			// case APP_SETTINGS.config.FIKA_COMMAND_LIST:
+			// 	await processList(body, respond);
+			// 	break;
 			default:
 				await respond(APP_SETTINGS.config.SLASH_COMMAND_USAGE);
 				break;
