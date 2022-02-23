@@ -10,6 +10,10 @@ export var sendUserlist = async (body: SlashCommand, respond: RespondFn, client:
     // send to requesting user
     // end request
     await respond(JSON.stringify(users))
+    await client.chat.postMessage({
+        text: JSON.stringify(users),
+        channel: body.channel_id
+    })
 	return {
 		statusCode: 200,
 		body: "send-dm",
