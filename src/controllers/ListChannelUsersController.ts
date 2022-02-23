@@ -5,8 +5,8 @@ import { RespondFn, SlashCommand } from '@slack/bolt';
 export var sendUserlist = async (body: SlashCommand, respond: RespondFn, client: WebClient) => {
     logger.info("sending userlist");
     // get full channel userlist 
-    const users = client.conversations.members({ channel: body.channel_id });
-    logger.info(JSON.stringify(users))
+    const users = await client.conversations.members({ channel: body.channel_id });
+    logger.info("users", JSON.stringify(users))
     // send to requesting user
     // end request
     await respond(JSON.stringify(users))
