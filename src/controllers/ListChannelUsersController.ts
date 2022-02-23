@@ -15,7 +15,8 @@ export var sendUserlist = async (body: SlashCommand, respond: RespondFn, client:
     });
     if(users.ok){
         console.log("got list of users");
-        const members = users.members?.join("\n") || "no members in channel";
+        const members = users.members?.map((m :string) => `<@${m}>`)
+            .join("\n") || "no members in channel";
         console.log(members);
         await respond(members);
         await client.chat.postMessage({
