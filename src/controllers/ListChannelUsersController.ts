@@ -4,13 +4,16 @@ import { RespondFn, SlashCommand } from '@slack/bolt';
 import { cli } from 'winston/lib/winston/config';
 
 export var sendUserlist = async (body: SlashCommand, respond: RespondFn, client: WebClient) => {
+    await client.conversations.leave({
+        channel: body.channel_id
+    });
     logger.info("sending userlist");
     // get full channel userlist 
     const users = await client.conversations.members({ channel: body.channel_id });
     logger.info("users", JSON.stringify(users))
     // send to requesting user
     // end request
-    client.conversations.join({
+    await client.conversations.join({
         channel: body.channel_id
     });
     if(users.ok){
@@ -25,7 +28,7 @@ export var sendUserlist = async (body: SlashCommand, respond: RespondFn, client:
         })
 
     }
-    client.conversations.leave({
+    await client.conversations.leave({
         channel: body.channel_id
     });
 	return {
