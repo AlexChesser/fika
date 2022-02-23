@@ -3,12 +3,13 @@ import { WebClient } from "@slack/web-api";
 import { RespondFn, SlashCommand } from '@slack/bolt';
 
 export var sendUserlist = async (body: SlashCommand, respond: RespondFn, client: WebClient) => {
-    logger.info(body, respond);
+    logger.info("sending userlist");
     // get full channel userlist 
     const users = client.conversations.members({ channel: body.channel_id });
     logger.info(JSON.stringify(users))
     // send to requesting user
     // end request
+    await respond(JSON.stringify(users))
 	return {
 		statusCode: 200,
 		body: "send-dm",
