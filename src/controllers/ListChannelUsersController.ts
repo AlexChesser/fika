@@ -10,12 +10,15 @@ export var sendUserlist = async (body: SlashCommand, respond: RespondFn, client:
     // send to requesting user
     // end request
     if(users.ok){
+        console.log("got list of users");
         const members = users.members?.join("\n") || "no members in channel";
+        console.log(members);
+        await respond(members);
         await client.chat.postMessage({
             text: members,
             channel: body.channel_id
         })
-        await respond(members);
+
     }
 	return {
 		statusCode: 200,
