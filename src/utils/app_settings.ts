@@ -8,7 +8,7 @@ export const config: any = {
 	SEND_DMS_PATH: `${ROOT_PATH}/send-dms`,
 
 	FIKA_SLASH_COMMAND_USERMANAGEMENT: "/fika",
-	FIKA_COMMAND_PAIRS: "pair",
+	FIKA_COMMAND_PAIR: "pair",
 
 	SLASH_COMMAND_USAGE,
 
