@@ -14,7 +14,7 @@ export var generatePairs = async (body: SlashCommand, respond: RespondFn, client
                 pairs.push(`standby: ${one}`);
                 break;
             }
-            const two = members.splice(Math.floor(Math.random()*members.length));
+            const two = members.splice(Math.floor(Math.random()*members.length),1)[0];
             pairs.push(`${one} meet ${two}`);
         }
         await respond(pairs.join("\n"));
