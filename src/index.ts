@@ -3,7 +3,9 @@ import { logger } from './utils/logger';
 import * as APP_SETTINGS from './utils/app_settings';
 import { APIGatewayEvent, Context } from 'aws-lambda';
 import { App, ExpressReceiver, ReceiverEvent } from '@slack/bolt';
-import fetch from 'node-fetch';
+const axios = require('axios').default;
+
+// axios.<method> will now provide autocomplete and parameter typings
 
 import * as FikaCommandController from './controllers/FikaCommandController';
 
@@ -69,8 +71,7 @@ async function Oauth(event: APIGatewayEvent) {
 			code: code
 		}
 	};
-	const response = await fetch('https://slack.com/api/oauth.access', {
-		method: 'POST',
+	const response = await axios.post('https://slack.com/api/oauth.access', {
 		body: JSON.stringify(data)
 	});
 	logger.info(JSON.stringify(response));
