@@ -65,11 +65,9 @@ async function Oauth(event: APIGatewayEvent) {
 		};
 	}
 	const data = {
-		form: {
-			client_id: process.env.SLACK_CLIENT_ID,
-			client_secret: process.env.SLACK_CLIENT_SECRET,
-			code: code
-		}
+		client_id: process.env.SLACK_CLIENT_ID,
+		client_secret: process.env.SLACK_CLIENT_SECRET,
+		code: code
 	};
 	logger.info(`getting oauth for ${code}`);
 	const response = await axios.post('https://slack.com/api/oauth.v2.access', data);
