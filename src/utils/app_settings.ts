@@ -1,7 +1,7 @@
 let ROOT_PATH = '/.netlify/functions/index';
 
 let SLASH_COMMAND_USAGE = `*Usage*:
-\`/fika pair\` create a randomly generated list of suggested pairs. Note that you will have to check it against previous months for dupes cause it's RANDOM!`;
+\`/fika pair\` create a randomly generated list of suggested pairs. Note that you will have to check it against previous months for dupelicate matches because it is RANDOM!`;
 export const config: any = {
 
 	ASSIGN_GROUPS_PATH: `${ROOT_PATH}/assign-groups`,
