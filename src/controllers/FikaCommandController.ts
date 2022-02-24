@@ -24,15 +24,15 @@ export var processCommand = async (body: SlashCommand, ack: AckFn<string | Respo
 	console.log(`calling action: ${action}`);
 	// invalid command, show usage
 	if ([APP_SETTINGS.config.FIKA_COMMAND_PAIR].indexOf(action) < 0) {
-		console.log("invalid response :'(")
-		await respond(APP_SETTINGS.config.SLASH_COMMAND_USAGE);
+		console.log("invalid command")
+		await respond(`Command \`${action}\` is invalid.\n${APP_SETTINGS.config.SLASH_COMMAND_USAGE}`);
 		return;
 	}
 
 	// else this is a valid command
 	try {
 		switch (action) {
-			case APP_SETTINGS.config.FIKA_COMMAND_PAIRS:
+			case APP_SETTINGS.config.FIKA_COMMAND_PAIR:
 				console.log("generating pairs!")
 				await generatePairs(body, respond, client);
 				break;
