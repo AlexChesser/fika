@@ -4,9 +4,13 @@ import { RespondFn, SlashCommand } from '@slack/bolt';
 import { cli } from 'winston/lib/winston/config';
 
 export var sendUserlist = async (body: SlashCommand, respond: RespondFn, client: WebClient) => {
-    await client.conversations.leave({
-        channel: body.channel_id
-    });
+    try {
+        await client.conversations.leave({
+            channel: body.channel_id
+        });        
+    } catch {
+        logger.info("bot was not in channel - this is expected");
+    }
     logger.info("sending userlist");
     // get full channel userlist 
     const users = await client.conversations.members({ channel: body.channel_id });
@@ -22,10 +26,10 @@ export var sendUserlist = async (body: SlashCommand, respond: RespondFn, client:
             .join("\n") || "no members in channel";
         console.log(members);
         await respond(members);
-        await client.chat.postMessage({
-            text: members,
-            channel: body.channel_id
-        })
+        // await client.chat.postMessage({
+        //     text: members,
+        //     channel: body.channel_id
+        // })
 
     }
     await client.conversations.leave({

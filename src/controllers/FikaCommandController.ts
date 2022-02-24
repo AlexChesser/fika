@@ -21,6 +21,7 @@ export var processCommand = async (body: SlashCommand, ack: AckFn<string | Respo
 	}
 
 	var action = params[0].toLowerCase();
+	console.log(`calling action: ${action}`);
 	// invalid command, show usage
 	if ([APP_SETTINGS.config.FIKA_COMMAND_USERS].indexOf(action) < 0) {
 		await respond(APP_SETTINGS.config.SLASH_COMMAND_USAGE);
