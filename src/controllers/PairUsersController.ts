@@ -9,7 +9,7 @@ export var generatePairs = async (body: SlashCommand, respond: RespondFn, client
         const members = users.members?.map((m :string) => `<@${m}>`);
         let pairs :string[] = [];
         while(members != undefined && members.length > 0){
-            const one = members.pop();
+            const one = members.shift();
             if(members.length == 0){
                 pairs.push(`standby: ${one}`);
                 break;
