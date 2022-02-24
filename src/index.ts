@@ -56,7 +56,6 @@ function parseRequestBody(stringBody: string | null, contentType: string | undef
 
 async function Oauth(event: APIGatewayEvent) {
 	const code = !!event.queryStringParameters && !!event.queryStringParameters.code ? event.queryStringParameters.code : null;
-	logger.info(`code: ${code} from ${JSON.stringify(event.queryStringParameters)} and ${JSON.stringify(event.multiValueQueryStringParameters)}`)
 	if (!code) {
 		// access denied
 		logger.log('Access denied');
@@ -73,7 +72,7 @@ async function Oauth(event: APIGatewayEvent) {
 		}
 	};
 	logger.info(`getting oauth for ${code}`);
-	const response = await axios.post('https://slack.com/api/oauth.access', data);
+	const response = await axios.post('https://slack.com/api/oauth.v2.access', data);
 	logger.info(JSON.stringify(response.data));
 	logger.info(JSON.stringify(response.headers));
 	return {
