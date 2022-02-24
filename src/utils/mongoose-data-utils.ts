@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose = require("mongoose");
 
 export async function getMongoose() {
 	await mongoose.connect(process.env.MONGODB_URI || '');
