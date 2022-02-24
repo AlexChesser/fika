@@ -75,7 +75,10 @@ async function Oauth(event: APIGatewayEvent) {
 	const response = await axios.post('https://slack.com/api/oauth.access', data);
 	logger.info(JSON.stringify(response.data));
 	logger.info(JSON.stringify(response.headers));
-	return response.data;
+	return {
+		statusCode: 200,
+		body: response.data
+	};
 }
 
 /**
@@ -90,7 +93,7 @@ async function Oauth(event: APIGatewayEvent) {
 export async function handler(event: APIGatewayEvent, context: Context) {
 	try {
 		if (event.httpMethod === 'GET') {
-			logger.info("Checking Oauth");
+			logger.info('Checking Oauth');
 			return await Oauth(event);
 		}
 		logger.info(`event: ${JSON.stringify(event)}, context: ${JSON.stringify(context)}`);
