@@ -21,7 +21,6 @@ const app = new App({
 	receiver: expressReceiver
 });
 
-
 /**
  * Configure Slack Bot Commands
  */
@@ -73,6 +72,10 @@ function parseRequestBody(stringBody: string | null, contentType: string | undef
  */
 export async function handler(event: APIGatewayEvent, context: Context) {
 	try {
+		if(event === undefined){
+			logger.info("event is undefined, suspected OAUTH request");
+			logger.info(JSON.stringify(context))
+		}
 		// verify incoming request is valid
 		const payload = parseRequestBody(event.body, event.headers["content-type"]);
 		logger.info("payload:", payload);
