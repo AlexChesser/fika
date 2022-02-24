@@ -1,7 +1,6 @@
 let ROOT_PATH = '/.netlify/functions/index';
 
 let SLASH_COMMAND_USAGE = `*Usage*:
-\`/fika names\` send you a DM of all the user IDs in a given channel suitable for using to manually create matchups with
 \`/fika pair\` create a randomly generated list of suggested pairs. Note that you will have to randomly check it against previous months for dupes cause it's RANDOM!`;
 export const config: any = {
 
@@ -9,11 +8,7 @@ export const config: any = {
 	SEND_DMS_PATH: `${ROOT_PATH}/send-dms`,
 
 	FIKA_SLASH_COMMAND_USERMANAGEMENT: "/fika",
-	FIKA_COMMAND_ADD: "add",
-	FIKA_COMMAND_REMOVE: "remove",
-	FIKA_COMMAND_LIST: "list",
 	FIKA_COMMAND_PAIRS: "pair",
-	FIKA_COMMAND_USERNAMES: "names",
 
 	SLASH_COMMAND_USAGE,
 

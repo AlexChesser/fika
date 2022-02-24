@@ -3,7 +3,6 @@ import * as APP_SETTINGS from '../utils/app_settings';
 
 import { AckFn, RespondArguments, RespondFn, SlashCommand } from '@slack/bolt';
 import { WebClient } from '@slack/web-api';
-import { sendUserlist } from './ListChannelUsersController';
 import { generatePairs } from './PairUsersController';
 
 export var processCommand = async (body: SlashCommand, ack: AckFn<string | RespondArguments>, respond: RespondFn, client: WebClient) => {
@@ -32,9 +31,6 @@ export var processCommand = async (body: SlashCommand, ack: AckFn<string | Respo
 	// else this is a valid command
 	try {
 		switch (action) {
-			case APP_SETTINGS.config.FIKA_COMMAND_USERS:
-				await sendUserlist(body, respond, client);
-				break;
 			case APP_SETTINGS.config.FIKA_COMMAND_PAIRS:
 				await generatePairs(body, respond, client);
 				break;
