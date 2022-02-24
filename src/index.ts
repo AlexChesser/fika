@@ -67,7 +67,7 @@ async function Oauth(event: APIGatewayEvent) {
 	const data = {
 		form: {
 			client_id: process.env.SLACK_CLIENT_ID,
-			client_secret: process.env.SLACK_SIGNING_SECRET,
+			client_secret: process.env.SLACK_CLIENT_SECRET,
 			code: code
 		}
 	};
