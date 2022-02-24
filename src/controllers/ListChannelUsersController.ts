@@ -4,22 +4,10 @@ import { RespondFn, SlashCommand } from '@slack/bolt';
 import { cli } from 'winston/lib/winston/config';
 
 export var sendUserlist = async (body: SlashCommand, respond: RespondFn, client: WebClient) => {
-    try {
-        await client.conversations.leave({
-            channel: body.channel_id
-        });        
-    } catch {
-        logger.info("bot was not in channel - this is expected");
-    }
     logger.info("sending userlist");
     // get full channel userlist 
     const users = await client.conversations.members({ channel: body.channel_id });
     logger.info("users", JSON.stringify(users))
-    // send to requesting user
-    // end request
-    await client.conversations.join({
-        channel: body.channel_id
-    });
     if(users.ok){
         console.log("got list of users");
         const members = users.members?.map((m :string) => `<@${m}>`)
@@ -32,9 +20,6 @@ export var sendUserlist = async (body: SlashCommand, respond: RespondFn, client:
         // })
 
     }
-    await client.conversations.leave({
-        channel: body.channel_id
-    });
 	return {
 		statusCode: 200,
 		body: "list-channel-users",
