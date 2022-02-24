@@ -1,14 +1,9 @@
 import { logger } from './utils/logger';
-
+import { SlackOAuthV2 } from './controllers/SlackOAuthV2Controller';
 import * as APP_SETTINGS from './utils/app_settings';
 import { APIGatewayEvent, Context } from 'aws-lambda';
 import { App, ExpressReceiver, ReceiverEvent } from '@slack/bolt';
-const axios = require('axios').default;
-
-// axios.<method> will now provide autocomplete and parameter typings
-
 import * as FikaCommandController from './controllers/FikaCommandController';
-import { OauthV2AccessResponse } from '@slack/web-api';
 
 /**
  * Initialize Slack Bot communication with bot token and signing secret
@@ -55,29 +50,6 @@ function parseRequestBody(stringBody: string | null, contentType: string | undef
 	}
 }
 
-async function Oauth(event: APIGatewayEvent) {
-	const code = !!event.queryStringParameters && !!event.queryStringParameters.code ? event.queryStringParameters.code : null;
-	if (!code) {
-		// access denied
-		logger.log('Access denied');
-		return {
-			statusCode: 200,
-			body: 'access-denied'
-		};
-	}
-	logger.info(`getting oauth for ${code}`);
-	const response : OauthV2AccessResponse = await app.client.oauth.v2.access({
-		client_id:  process.env.SLACK_CLIENT_ID || "SLACK_CLIENT_ID",
-		client_secret: process.env.SLACK_CLIENT_SECRET || "SLACK_CLIENT_SECRET",
-		code
-	});
-	logger.info(JSON.stringify(response));
-	return {
-		statusCode: 200,
-		body: JSON.stringify(response)
-	};
-}
-
 /**
  * Main handler for all incoming events
  *
@@ -89,9 +61,9 @@ async function Oauth(event: APIGatewayEvent) {
  */
 export async function handler(event: APIGatewayEvent, context: Context) {
 	try {
-		if (event.httpMethod === 'GET') {
+		if (event.httpMethod === 'GET' && !!event.queryStringParameters && !!event.queryStringParameters.code) {
 			logger.info('Checking Oauth');
-			return await Oauth(event);
+			return await SlackOAuthV2(app.client, event.queryStringParameters.code);
 		}
 		logger.info(`event: ${JSON.stringify(event)}, context: ${JSON.stringify(context)}`);
 		// verify incoming request is valid
@@ -103,7 +75,6 @@ export async function handler(event: APIGatewayEvent, context: Context) {
 				body: payload.challenge
 			};
 		}
-
 		// process any events coming from Slack
 		const slackEvent: ReceiverEvent = {
 			body: payload,

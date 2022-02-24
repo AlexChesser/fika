@@ -1,10 +1,14 @@
 import { logger } from '../utils/logger';
 import { WebClient } from "@slack/web-api";
 import { RespondFn, SlashCommand } from '@slack/bolt';
+import { getAccessToken } from './SlackOAuthV2Controller';
 
 export var generatePairs = async (body: SlashCommand, respond: RespondFn, client: WebClient) => {
     logger.info("creating pairs"); 
-    const users = await client.conversations.members({ channel: body.channel_id });
+    const users = await client.conversations.members({
+        token: await getAccessToken(body.team_id),
+        channel: body.channel_id
+    });
     if(users.ok){
         const members = users.members?.map((m :string) => `<@${m}>`);
         let pairs :string[] = [];
