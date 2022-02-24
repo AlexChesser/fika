@@ -14,10 +14,6 @@ export var sendUserlist = async (body: SlashCommand, respond: RespondFn, client:
             .join("\n") || "no members in channel";
         console.log(members);
         await respond(members);
-        // await client.chat.postMessage({
-        //     text: members,
-        //     channel: body.channel_id
-        // })
 
     }
 	return {

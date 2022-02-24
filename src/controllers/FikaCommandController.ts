@@ -1,21 +1,22 @@
 import { logger } from '../utils/logger';
 import * as APP_SETTINGS from '../utils/app_settings';
 
-import { AckFn, RespondArguments, RespondFn, SlashCommand } from "@slack/bolt";
-import { WebClient } from "@slack/web-api";
+import { AckFn, RespondArguments, RespondFn, SlashCommand } from '@slack/bolt';
+import { WebClient } from '@slack/web-api';
 import { sendUserlist } from './ListChannelUsersController';
+import { generatePairs } from './PairUsersController';
 
 export var processCommand = async (body: SlashCommand, ack: AckFn<string | RespondArguments>, respond: RespondFn, client: WebClient) => {
-	logger.info("process commands", JSON.stringify(body))
+	logger.info('process commands', JSON.stringify(body));
 	await ack();
 	var params: string[] = [];
-	if (body.text != "") {
-		params = body.text.split(" ");
+	if (body.text != '') {
+		params = body.text.split(' ');
 	}
 
 	// invalid number of arguments, show usage
 	if (params.length <= 0) {
-		console.log("no params")
+		console.log('no params');
 		await respond(APP_SETTINGS.config.SLASH_COMMAND_USAGE);
 		return;
 	}
@@ -34,13 +35,16 @@ export var processCommand = async (body: SlashCommand, ack: AckFn<string | Respo
 			case APP_SETTINGS.config.FIKA_COMMAND_USERS:
 				await sendUserlist(body, respond, client);
 				break;
+			case APP_SETTINGS.config.FIKA_COMMAND_PAIRS:
+				await generatePairs(body, respond, client);
+				break;
 			default:
 				await respond(APP_SETTINGS.config.SLASH_COMMAND_USAGE);
 				break;
 		}
 		return;
 	} catch (e) {
-		logger.error("error:", e);
+		logger.error('error:', e);
 		await respond(APP_SETTINGS.config.SLASH_COMMAND_USAGE);
 		return;
 	}
