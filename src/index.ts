@@ -71,10 +71,12 @@ async function Oauth(event: APIGatewayEvent) {
 			code: code
 		}
 	};
+	logger.info(`getting oauth for ${code}`);
 	const response = await axios.post('https://slack.com/api/oauth.access', {
 		body: JSON.stringify(data)
 	});
-	logger.info(JSON.stringify(response));
+	logger.info(JSON.stringify(response.data));
+	logger.info(JSON.stringify(response.headers));
 	return response;
 }
 
