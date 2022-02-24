@@ -56,6 +56,7 @@ function parseRequestBody(stringBody: string | null, contentType: string | undef
 
 async function Oauth(event: APIGatewayEvent) {
 	const code = !!event.queryStringParameters && !!event.queryStringParameters.code ? event.queryStringParameters.code : null;
+	logger.info(`code: ${code} from ${JSON.stringify(event.queryStringParameters)} and ${JSON.stringify(event.multiValueQueryStringParameters)}`)
 	if (!code) {
 		// access denied
 		logger.log('Access denied');
