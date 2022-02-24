@@ -7,7 +7,8 @@ export var generatePairs = async (body: SlashCommand, respond: RespondFn, client
     logger.info("creating pairs"); 
     const users = await client.conversations.members({
         token: await getAccessToken(body.team_id),
-        channel: body.channel_id
+        channel: body.channel_id,
+        limit: 999
     });
     if(users.ok){
         const members = users.members?.map((m :string) => `<@${m}>`);
