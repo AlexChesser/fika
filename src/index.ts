@@ -77,7 +77,7 @@ async function Oauth(event: APIGatewayEvent) {
 	logger.info(JSON.stringify(response.headers));
 	return {
 		statusCode: 200,
-		body: response.data
+		body: JSON.stringify(response.data)
 	};
 }
 
