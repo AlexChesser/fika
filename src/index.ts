@@ -8,6 +8,7 @@ const axios = require('axios').default;
 // axios.<method> will now provide autocomplete and parameter typings
 
 import * as FikaCommandController from './controllers/FikaCommandController';
+import { OauthV2AccessResponse } from '@slack/web-api';
 
 /**
  * Initialize Slack Bot communication with bot token and signing secret
@@ -64,18 +65,16 @@ async function Oauth(event: APIGatewayEvent) {
 			body: 'access-denied'
 		};
 	}
-	const data = {
-		client_id: process.env.SLACK_CLIENT_ID,
-		client_secret: process.env.SLACK_CLIENT_SECRET,
-		code: code
-	};
 	logger.info(`getting oauth for ${code}`);
-	const response = await axios.post('https://slack.com/api/oauth.v2.access', data);
-	logger.info(JSON.stringify(response.data));
-	logger.info(JSON.stringify(response.headers));
+	const response : OauthV2AccessResponse = await app.client.oauth.v2.access({
+		client_id:  process.env.SLACK_CLIENT_ID || "SLACK_CLIENT_ID",
+		client_secret: process.env.SLACK_CLIENT_SECRET || "SLACK_CLIENT_SECRET",
+		code
+	});
+	logger.info(JSON.stringify(response));
 	return {
 		statusCode: 200,
-		body: JSON.stringify(response.data)
+		body: JSON.stringify(response)
 	};
 }
 
