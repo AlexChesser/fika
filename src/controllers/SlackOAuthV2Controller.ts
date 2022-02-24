@@ -23,7 +23,7 @@ export async function SlackOAuthV2(client: WebClient, code: string) {
 		team_id: response.team?.id,
 		access_token: response.access_token,
 		response
-	})
+	}, { upsert: true })
 	.exec();
 	mongoose.disconnect();
 	logger.info(JSON.stringify(response));

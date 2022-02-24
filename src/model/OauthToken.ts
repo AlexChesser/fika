@@ -8,7 +8,7 @@ import mongoose from 'mongoose';
 
 const OauthSchema = new Schema<IOAuthToken>(
 	{
-		team_id: String,
+		team_id: { type: String, index: true, unique: true },
 		access_token: String,
 		response: Schema.Types.Mixed
 	},
