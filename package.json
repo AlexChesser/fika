@@ -2,6 +2,7 @@
 	"name": "fika-slackbot",
 	"description": "A bot that does donut but worse",
 	"version": "0.0.0",
+	"type": "module",
 	"scripts": {
 		"build": "tsc --project tsconfig.prod.json",
 		"test": "jest"
