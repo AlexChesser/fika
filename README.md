@@ -1,6 +1,8 @@
 # fika
 The fika slackbot
 
+[![Add Fika to Slack!](https://platform.slack-edge.com/img/add_to_slack.png)](https://slack.com/oauth/v2/authorize?client_id=2471888024277.2460475620695&scope=channels:read,chat:write,commands&user_scope=)
+
 # About the Project
 
 Currently a work in progress / Proof of concept

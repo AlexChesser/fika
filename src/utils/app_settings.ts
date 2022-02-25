@@ -1,7 +1,7 @@
 let ROOT_PATH = '/.netlify/functions/index';
 
 let SLASH_COMMAND_USAGE = `*Usage*:
-\`/fika pair\` create a randomly generated list of suggested pairs. Note that you will have to check it against previous months for dupelicate matches because it is RANDOM!`;
+\`/fika pair\` create a randomly generated list of suggested pairs visible only to the user who ran the command. This must be manually copy and pasted into a channel by the donut admin. Also note that if you have a bot in the channel it will get added as a viable pair-up.  Finally, this currently maxes out at \`999\` users in the channel. Reach out if that's a problem and I'll put time into fixing it.`;
 export const config: any = {
 
 	ASSIGN_GROUPS_PATH: `${ROOT_PATH}/assign-groups`,
