@@ -5,6 +5,7 @@ import { getAccessToken } from './SlackOAuthV2Controller';
 
 export var generatePairs = async (body: SlashCommand, respond: RespondFn, client: WebClient) => {
     logger.info("creating pairs"); 
+    const GROUP_SIZE = 35;
     const users = await client.conversations.members({
         token: await getAccessToken(body.team_id),
         channel: body.channel_id,
@@ -21,6 +22,9 @@ export var generatePairs = async (body: SlashCommand, respond: RespondFn, client
             }
             const two = members.splice(Math.floor(Math.random()*members.length),1)[0];
             pairs.push(`${one} meet ${two}`);
+            if(pairs.length % GROUP_SIZE == 0){
+                pairs.push(`======= break ${pairs.length / GROUP_SIZE} ======`)
+            }
         }
         await respond(pairs.join("\n"));
     }
